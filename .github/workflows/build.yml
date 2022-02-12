@@ -8,6 +8,8 @@ on:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release-please.outputs.release_created }}
     steps:
       - uses: google-github-actions/release-please-action@v3
         id: release-please
@@ -18,7 +20,7 @@ jobs:
   release:
     needs: release-please
     runs-on: windows-latest
-    if: needs.release-please.steps.release-please.outputs.release_created
+    if: needs.release-please.outputs.release_created
     steps:
       - uses: actions/checkout@v2
 
