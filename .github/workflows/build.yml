@@ -18,7 +18,7 @@ jobs:
   release:
     needs: release-please
     runs-on: windows-latest
-    if: jobs.release-please.steps.release-please.outputs.release_created
+    if: needs.release-please.steps.release-please.outputs.release_created
     steps:
       - uses: actions/checkout@v2
 
