@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release-please.outputs.release_created }}
+      tag_name: ${{ steps.release-please.outputs.tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v3
         id: release-please
@@ -24,6 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: softprops/action-gh-release@v1
+      - uses: svenstaro/upload-release-action@v2
         with:
-          files: test.txt
+          file: test.txt
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          asset_name: test-$tag.txt
+          tag: ${{ needs.release-please.outputs.tag_name }}
