@@ -1,0 +1,27 @@
+name: Build
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release-please
+        with:
+          release-type: rust
+          package-name: release-please-action
+
+  release:
+    needs: release-please
+    runs-on: windows-latest
+    if: release-please.steps.release-please.outputs.release_created
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: test.txt
